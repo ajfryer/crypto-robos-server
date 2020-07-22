@@ -17,11 +17,12 @@ const morganSetting = NODE_ENV === 'production' ? 'tiny' : 'common';
 app.use(morgan(morganSetting));
 
 app.use(helmet());
+app.use(cors({ origin: '*' }));
 
 // public static files
 app.use(express.static('public'));
 
-// routes
+// main routes
 app.use('/api/prices', pricesRouter);
 
 // global error handler
