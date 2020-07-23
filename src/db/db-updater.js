@@ -29,11 +29,10 @@ async function fetchCurrentPricesBySymbol(symbol) {
   //const url = ('test/dailyBTC.json');
 
   try {
-    //console.log('fetching data for' + symbol + ' from ' + url);
     const response = await fetch(url);
     if (response.ok) {
       const responseJSON = await response.json();
-      //console.log('data fetched', responseJSON);
+
       return responseJSON;
     }
     throw new Error(response.statusText);
@@ -46,7 +45,6 @@ async function fetchCurrentPricesBySymbol(symbol) {
 const fetchAllCurrentPrices = async (currentSymbols) => {
   const prices = [];
   for (symbol of currentSymbols) {
-    //console.log('fetching data for current symbols:' + currentSymbols);
     let retries = 3;
     let attempts = 0;
     let responseJSON = {};
@@ -54,7 +52,6 @@ const fetchAllCurrentPrices = async (currentSymbols) => {
       attempts++;
       responseJSON = await fetchCurrentPricesBySymbol(symbol);
       if (responseJSON.Note) {
-        //console.log('hit rate limit, retrying in 60000 miliseconds');
         await new Promise((resolve) => setTimeout(resolve, 60000));
         continue;
       } else break;
@@ -99,7 +96,7 @@ const updatePrices = async () => {
 const dbUpdater = async () => {
   // get day of most recent price data from db
   let latestDay = await pricesService.selectLatestDay();
-  //console.log('latest day when db is blank', latestDay);
+
   if (!latestDay) {
     latestDay = moment.unix(0);
   } else latestDay = moment(latestDay.day).tz('UTC');
